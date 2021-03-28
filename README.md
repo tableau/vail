@@ -31,10 +31,6 @@ Importantly, the user interacts with the *intent*, seeing and modifying it, rath
     * **edit**: CRUD operations on *intent specifications*
     * **manager**: convert between different types of specifications
 
-# Demo
-
-Run the latest version [here](https://octo.gitlab.pages.tableausoftware.com/research/vail-proto/).
-
 # Get started
 
 This section describes how to install and configure VAIL.
