@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * For full license text, see the LICENSE file in the repo root
+ */
+
+/* intent property that was explicitly set or not set at all */
+.explicit {
+  font-weight: normal;
+}
+
+/* intent property that was inferred */
+.inferred {
+  font-weight: bold;
+}

@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * For full license text, see the LICENSE file in the repo root
+ */
+
+.mainForm {
+  padding: 10px;
+  font-size: 13px;
+  font-family: Benton Sans, Arial, Helvetica, sans-serif;
+  color: rgba(0, 0, 0, 0.8);
+}
+.root {
+  padding: 10px;
+  font-size: 13px;
+  display: flex;
+}
