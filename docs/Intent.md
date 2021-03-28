@@ -1,7 +1,5 @@
 # Intent
 
-[[_TOC_]]
-
 VAIL models *intent*, i.e., a description of what the user is intending to look for when exploring data.
 The VAIL engine can convert this intent to *output* that the user can see or hear such as a visualization or text.
 But importantly, the user edits the *intent model* rather than the *output*.

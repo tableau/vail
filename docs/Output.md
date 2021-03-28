@@ -1,7 +1,5 @@
 # Output
 
-[[_TOC_]]
-
 The VAIL engine can take the user intent model and provide suggestions for how to effectively present the results to communicate the intent.
 Specifically, it takes a `VailIntentSpec` (user intent model) and a `DataSemantics` (data field semantics) and creates a `VailOutputSpec`.
 

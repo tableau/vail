@@ -1,7 +1,5 @@
 # Using the VAIL engine
 
-[[_TOC_]]
-
 VAIL (Visual Analytics Intent Language) is a library that lets you build systems that enable users to explore a data set by expressing a higher-level "intent" for what they want to see, e.g., "show me the cheap wines" or "show the trend", rather than a more typical, lower-level technical description of *how* to display it, e.g., "make a row for each wine variety and show a bar chart where the length is based on price, sorted by price."
 
 ![sample focus intent](image/focus-example.png)
