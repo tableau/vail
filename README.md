@@ -31,6 +31,10 @@ Importantly, the user interacts with the *intent*, seeing and modifying it, rath
     * **edit**: CRUD operations on *intent specifications*
     * **manager**: convert between different types of specifications
 
+# Demo
+
+[Watch a demo](https://www.youtube.com/watch?v=5eUyDMgm2qw) of using VAIL from an embedded Slack application.
+
 # Get started
 
 This section describes how to install and configure VAIL.
