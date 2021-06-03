@@ -7,7 +7,6 @@
 import * as VL from 'vega-lite';
 import { FieldResolver } from '../../api/spec/FieldAPI';
 import { FocusSpec, OutputSpec } from '../../api/spec/OutputSpec';
-import { sortData } from './SortData';
 
 const highlightColor = '#ff5e13';
 
@@ -19,11 +18,8 @@ export function addFocus(vlspec: VL.TopLevelSpec, outputSpec: OutputSpec, fieldR
     for (const focusSpec of focusSpecs) {
       if (sortSpecs) {
         // While there might be multiple possibilities, we'll take the first sortBy field for now
-        const descending = focusSpec.adjective === 'top' || focusSpec.adjective === 'high';
-        const [sortByName, res] = sortData(sortSpecs[0], fieldResolver, data, descending);
-        // add sorted data and instructions for focus
-        vlspec = { ...vlspec, data: { values: res } };
-        vlspec = addFocusWithSort(vlspec, focusSpec, res, sortByName);
+        const sortByName = fieldResolver.getField(sortSpecs[0].sortBy).field;
+        vlspec = addFocusWithSort(vlspec, focusSpec, data, sortByName);
       } else {
         vlspec = addFocusNoSort(vlspec, focusSpec, fieldResolver);
       }

@@ -7,17 +7,29 @@
 import alasql from 'alasql';
 import { FieldDerivation } from '../../api/spec/FieldDerivation';
 import { FieldResolver } from '../../api/spec/FieldAPI';
-import { SortSpec } from '../../api/spec/OutputSpec';
+import { OutputSpec, SortSpec } from '../../api/spec/OutputSpec';
+
+/** Run a query to shape the data properly for the given OutputSpec, aggregating, sorting, etc. */
+export function queryData(outputSpec: OutputSpec, fieldResolver: FieldResolver, data: object[]): object[] {
+  if (outputSpec.dataShape && outputSpec.dataShape.sort) {
+    const sortSpec = outputSpec.dataShape.sort[0];
+    return sortData(sortSpec, fieldResolver, data);
+  }
+  // TODO: aggregate, etc.
+  return data;
+}
 
 /**
  * use the sort spec to figure out how to sort the data
- * @returns sort field & sorted data
+ * @returns sorted data
  */
-export function sortData(sortSpec: SortSpec, fieldResolver: FieldResolver, data: object[], descending: boolean): [string, object[]] {
+export function sortData(sortSpec: SortSpec, fieldResolver: FieldResolver, data: object[]): object[] {
+  // TODO: query for all fields from the OutputSpec
   const sortByField = fieldResolver.getField(sortSpec.sortBy);
   const sortByName = sortByField.field;
   const sortByAgg = derivationToSQL(sortByField.derivation);
   const field = fieldResolver.getField(sortSpec.field).field;
+  const descending = sortSpec.sortType === 'descending';
 
   // Create an aggregated dataset that can be used to compute the focusLimit and as input to Vegalite.
   const queryString = 'SELECT ' + field + ', ' + sortByAgg + '(' + sortByName + ') AS ' + sortByName + ' FROM ? GROUP BY ' + field;
@@ -27,7 +39,7 @@ export function sortData(sortSpec: SortSpec, fieldResolver: FieldResolver, data:
   } else {
     res.sort((a: any, b: any) => (a[sortByName] > b[sortByName] ? 1 : -1));
   }
-  return [sortByName, res];
+  return res;
 }
 
 /** VAIL field derivation to SQL command */
