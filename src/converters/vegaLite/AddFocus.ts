@@ -97,6 +97,9 @@ function getFocusLimit(sortByField: string, data: any[], adj?: string, quantity?
     a.push(o[sortByField]);
     return a;
   }, []);
+  if (numValues[0] === undefined) {
+    return 0;
+  }
   if (adj === 'high' || adj === 'low') {
     const sd = getSD(numValues);
     const avg = getMean(numValues);
