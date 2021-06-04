@@ -10,6 +10,8 @@ import { DataSemantics } from '../../api/dataSemantics/DataSemantics';
 import { FieldDetails } from '../../api/spec/FieldSpec';
 import { putFieldsInProperty } from './PutFieldsInProperty';
 
+const defaultBinCount = 10;
+
 /**
  * Fill in missing information in a distribution intent.
  */
@@ -41,12 +43,18 @@ function fillInBinField(
   const fullList = qi.concat(qd).concat(currency);
 
   // if there's an explicit binCount, set that on all fields
-  const toAdd = intent.binCount
+  const withIntentBinCount = intent.binCount
     ? fullList.map(f => {
         return { ...f, binCount: intent.binCount };
       })
     : fullList;
+  const toAdd = withIntentBinCount.map(field => adjustFieldProps(field));
 
   const [newIntent, newFieldVars] = putFieldsInProperty(intent, 'binField', toAdd, fieldVars);
   return [newIntent as IntentDistribution, newFieldVars];
+}
+
+/** remove aggregation & add binCount */
+function adjustFieldProps(field: FieldDetails): FieldDetails {
+  return field.binCount ? { field: field.field, binCount: field.binCount } : { field: field.field, binCount: defaultBinCount };
 }

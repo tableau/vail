@@ -4,6 +4,7 @@
  * For full license text, see the LICENSE file in the repo root
  */
 
+import { fieldAPI } from '../../api/spec/FieldAPI';
 import { IntentSpec } from '../../api/spec/IntentSpec';
 import { OutputSpec } from '../../api/spec/OutputSpec';
 
@@ -19,7 +20,10 @@ export function intentToOutput(intent: IntentSpec, weight: number): OutputSpec |
       break;
     case 'distribution':
       if (intent.binField) {
-        return { weight, intentIds, encoding: { vizType: 'histogram', x: [intent.binField] } };
+        // drop the derivation if present since we need to bin all the rows
+        const binField = fieldAPI(intent.binField).asDetails();
+        const x = binField === null ? intent.binField : { field: binField.field, binCount: binField.binCount };
+        return { weight, intentIds, encoding: { vizType: 'histogram', x: [x] } };
       }
       break;
     case 'encoding':
