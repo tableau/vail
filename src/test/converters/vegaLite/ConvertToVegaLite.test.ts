@@ -9,7 +9,7 @@ import { convertToVegaLite } from '../../../converters/vegaLite/ConvertToVegaLit
 import { OutputSpec } from '../../../api/spec/OutputSpec';
 import { FieldResolver } from '../../../api/spec/FieldAPI';
 
-describe('createToVegaLite', () => {
+describe('convertToVegaLite', () => {
   const resolver = new FieldResolver({});
 
   it('should create a simple bar chart', () => {
