@@ -59,7 +59,7 @@ export function fieldsToOutput(
 
   // if there's nothing but a single measure, show a histogram
   if (allFields.length === 1 && fieldTypes.quantAll.length === 1) {
-    const x = fieldTypes.quantAll[0];
+    const x = removeDerivation(fieldTypes.quantAll[0]);
     outputs.push({ weight: 20, intentIds, encoding: { vizType: 'histogram', x: [x] } });
   }
 
@@ -78,4 +78,12 @@ function combine(fields: FieldSpec[], intentFields?: FieldSpec[], fieldVars?: Fi
     }
   });
   return allFields;
+}
+
+function removeDerivation(f: FieldSpec): FieldSpec {
+  const details = fieldAPI(f).asDetails();
+  if (details === null || details.derivation === undefined) {
+    return f;
+  }
+  return details.binCount ? { field: details.field, binCount: details.binCount } : { field: details.field };
 }
