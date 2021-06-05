@@ -10,7 +10,7 @@ import { EncodingSpec, OutputSpec } from '../../api/spec/OutputSpec';
 import { convertFieldType, convertVizType } from './Translators';
 import { FieldResolver } from '../../api/spec/FieldAPI';
 import { addFocus } from './AddFocus';
-import { queryData } from './QueryData';
+import { queryData } from '../query/QueryData';
 
 /** convert VAIL output spec to a vega-lite spec */
 export function convertToVegaLite(
@@ -19,7 +19,7 @@ export function convertToVegaLite(
   dataSemantics: DataSemantics,
   data: object[]
 ): VL.TopLevelSpec {
-  const processedData = queryData(outputSpec, fieldResolver, data);
+  const processedData = queryData(outputSpec, fieldResolver, data, dataSemantics);
   let vlspec = createBasicViz(outputSpec, fieldResolver, dataSemantics, processedData);
   if (outputSpec.encoding.vizType === 'histogram') {
     vlspec = addHistogram(vlspec, fieldResolver, outputSpec.encoding);
