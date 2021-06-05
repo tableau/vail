@@ -63,7 +63,7 @@ function getFullFields(dataSemantics: DataSemantics, fields?: FieldSpec[]): Fiel
   return fields.map(f => getFullField(dataSemantics, f));
 }
 
-/** if the field spec isn't explicit about things like derivation & bin size, use properties from the data source */
+/** if the field spec isn't explicit about things like derivation & bin count, use properties from the data source */
 function getFullField(dataSemantics: DataSemantics, field: FieldSpec): FieldSpec {
   if (!isFieldIncomplete(field)) {
     return field;

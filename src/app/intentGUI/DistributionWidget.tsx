@@ -57,7 +57,7 @@ export class DistributionWidget extends React.Component<DistributionWidgetProps>
             </tr>
             <tr>
               <td>
-                <PropertyLabel text="Bin Size" prop={'binCount'} inferred={inferredSpec.inferred} />
+                <PropertyLabel text="Bin Count" prop={'binCount'} inferred={inferredSpec.inferred} />
               </td>
               <td>
                 <input defaultValue={binCount} onChange={this.changeBinSize} onKeyPress={this.onBinSizeKey} />

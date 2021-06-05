@@ -104,7 +104,7 @@ type FieldSpec = string | FieldDetails | VariableFieldDetails;
 ```
 
 `FieldDetails` contains the name plus optional information on how to use the field.
-This can include a field derivation (an aggregation like sum, a date bin such as *the year the date belongs to*, or a date truncation such as *the year part of a date*) and bin size to use in conjunction with intents such as distribution.
+This can include a field derivation (an aggregation like sum, a date bin such as *the year the date belongs to*, or a date truncation such as *the year part of a date*) and bin count to use in conjunction with intents such as distribution.
 See [FieldDerivation.ts](../src/api/spec/FieldDerivation.ts) for the full list of options.
 
 ```javascript
