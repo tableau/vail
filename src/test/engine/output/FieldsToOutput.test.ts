@@ -13,6 +13,17 @@ describe('fieldsToOutput', () => {
     cat: { type: 'Cat', stats: { dataType: 'text', domain: [] } },
     measure: { type: 'Qd', stats: { dataType: 'numeric', domain: [] } },
     time: { type: 'CTime', stats: { dataType: 'text', domain: [] } },
+
+    catSmall: { type: 'Cat', stats: { dataType: 'text', domain: ['a', 'a', 'a'] } },
+    catMedium: { type: 'Cat', stats: { dataType: 'text', domain: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'] } },
+    catLarge: {
+      type: 'Cat',
+      stats: {
+        dataType: 'text',
+        domain: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+      },
+    },
+    measure2: { type: 'Qd', stats: { dataType: 'numeric', domain: [] } },
   };
 
   it('should create a bar from a cat & measure', () => {
@@ -43,5 +54,43 @@ describe('fieldsToOutput', () => {
     expect(encoding2.vizType).toBe('bar');
     expect(encoding2.x ? encoding2.x[0] : '').toBe('measure');
     expect(encoding2.y ? encoding2.y[0] : '').toBe('time');
+  });
+
+  it('should put low cardinality cat on color in a scatterplot', () => {
+    const intent: IntentFields = { intentType: 'fields', fields: ['measure', 'measure2', 'catSmall'] };
+    const output = fieldsToOutput(intent, simpleSemantics);
+
+    const scatter = output.filter(o => o.encoding.vizType === 'scatterPlot');
+    expect(scatter.length).toBe(1);
+    const encoding = scatter[0].encoding;
+    expect(encoding.x ? encoding.x[0] : '').toBe('measure');
+    expect(encoding.y ? encoding.y[0] : '').toBe('measure2');
+    expect(encoding.color ? encoding.color[0] : '').toBe('catSmall');
+  });
+
+  it('should put high cardinality cat on detail in a scatterplot', () => {
+    const intent: IntentFields = { intentType: 'fields', fields: ['measure', 'measure2', 'catLarge'] };
+    const output = fieldsToOutput(intent, simpleSemantics);
+
+    const scatter = output.filter(o => o.encoding.vizType === 'scatterPlot');
+    expect(scatter.length).toBe(1);
+    const encoding = scatter[0].encoding;
+    expect(encoding.x ? encoding.x[0] : '').toBe('measure');
+    expect(encoding.y ? encoding.y[0] : '').toBe('measure2');
+    expect(encoding.detail ? encoding.detail[0] : '').toBe('catLarge');
+  });
+
+  it('should put lowest cardinality cat on color & others on detail in a scatterplot', () => {
+    const intent: IntentFields = { intentType: 'fields', fields: ['measure', 'measure2', 'catLarge', 'catMedium', 'catSmall'] };
+    const output = fieldsToOutput(intent, simpleSemantics);
+
+    const scatter = output.filter(o => o.encoding.vizType === 'scatterPlot');
+    expect(scatter.length).toBe(1);
+    const encoding = scatter[0].encoding;
+    expect(encoding.x ? encoding.x[0] : '').toBe('measure');
+    expect(encoding.y ? encoding.y[0] : '').toBe('measure2');
+    expect(encoding.color ? encoding.color[0] : '').toBe('catSmall');
+    expect(encoding.detail ? encoding.detail[0] : '').toBe('catMedium');
+    expect(encoding.detail ? encoding.detail[1] : '').toBe('catLarge');
   });
 });
