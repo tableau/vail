@@ -66,7 +66,7 @@ function createFromIntents(create: IntentSpec[], dataSemantics: DataSemantics): 
     // rank output that comes from explicit intent higher than other output
     // & prefer the last specified intent over everything else
     const weight = i === create.length - 1 ? 91 : 90;
-    const newOutput = intentToOutput(intent, weight);
+    const newOutput = intentToOutput(intent, weight, dataSemantics);
     if (newOutput) {
       outputSpecs.push(newOutput);
       if (intent.id) {

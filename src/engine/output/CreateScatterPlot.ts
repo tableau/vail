@@ -14,12 +14,12 @@ import { OutputSpec } from '../../api/spec/OutputSpec';
 export function createScatterPlot(
   x: FieldSpec,
   y: FieldSpec,
-  details: FieldSpec[],
+  details: FieldSpec[] | undefined,
   weight: number,
   intentIds: number[],
   dataSemantics: DataSemantics
 ): OutputSpec {
-  if (details.length === 0) {
+  if (!details || details.length === 0) {
     return { weight, intentIds, encoding: { vizType: 'scatterPlot', x: [x], y: [y] } };
   }
 

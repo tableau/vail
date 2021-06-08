@@ -30,6 +30,7 @@ export interface IntentCorrelation {
 
   readonly field1?: FieldSpec;
   readonly field2?: FieldSpec;
+  readonly detail?: FieldSpec[];
 }
 
 /** distribution */

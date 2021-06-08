@@ -20,7 +20,7 @@ export interface IntentMetadata {
 }
 
 const correlationMetadata: IntentMetadata = {
-  allFields: ['field1', 'field2'],
+  allFields: ['field1', 'field2', 'detail'],
   inferrableFields: ['field1', 'field2'],
   inferrableProperties: [],
   outputType: 'create',

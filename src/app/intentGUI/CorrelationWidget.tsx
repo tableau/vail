@@ -35,6 +35,8 @@ export class CorrelationWidget extends React.Component<CorrelationWidgetProps> {
     const { inferredSpec, fields, fieldVars } = this.props;
     const field1 = inferredSpec.field1 ? fieldAPI(inferredSpec.field1).resolveNames(fieldVars)[0] : noneItem;
     const field2 = inferredSpec.field2 ? fieldAPI(inferredSpec.field2).resolveNames(fieldVars)[0] : noneItem;
+    const detail =
+      inferredSpec.detail && inferredSpec.detail.length > 0 ? fieldAPI(inferredSpec.detail[0]).resolveNames(fieldVars)[0] : noneItem;
     const fieldList = [noneItem].concat(fields);
 
     return (
@@ -64,6 +66,14 @@ export class CorrelationWidget extends React.Component<CorrelationWidgetProps> {
                 <DropDownList items={fieldList} selectedItem={field2} onSelect={this.pickField2} />
               </td>
             </tr>
+            <tr>
+              <td>
+                <PropertyLabel text="Detail" inferred={inferredSpec.inferred} />
+              </td>
+              <td>
+                <DropDownList items={fieldList} selectedItem={detail} onSelect={this.pickDetail} />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -83,6 +93,12 @@ export class CorrelationWidget extends React.Component<CorrelationWidgetProps> {
   private pickField2 = (name: string): void => {
     const field2 = name === noneItem ? undefined : name;
     const spec = { ...this.props.rawSpec, field2 };
+    this.props.setIntent(spec);
+  };
+
+  private pickDetail = (name: string): void => {
+    const detail = name === noneItem ? undefined : name;
+    const spec = detail ? { ...this.props.rawSpec, detail: [detail] } : this.props.rawSpec;
     this.props.setIntent(spec);
   };
 }

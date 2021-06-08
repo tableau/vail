@@ -4,18 +4,21 @@
  * For full license text, see the LICENSE file in the repo root
  */
 
+import { DataSemantics } from '../../api/dataSemantics/DataSemantics';
 import { fieldAPI } from '../../api/spec/FieldAPI';
 import { IntentSpec } from '../../api/spec/IntentSpec';
 import { OutputSpec } from '../../api/spec/OutputSpec';
+import { createScatterPlot } from './CreateScatterPlot';
 
 /** create a new OutputSpec for the stand-alone intent types */
-export function intentToOutput(intent: IntentSpec, weight: number): OutputSpec | null {
+export function intentToOutput(intent: IntentSpec, weight: number, dataSemantics: DataSemantics): OutputSpec | null {
   const intentIds = intent.id ? [intent.id] : [];
 
   switch (intent.intentType) {
     case 'correlation':
       if (intent.field1 && intent.field2) {
-        return { weight, intentIds, encoding: { vizType: 'scatterPlot', x: [intent.field1], y: [intent.field2] } };
+        const output = createScatterPlot(intent.field1, intent.field2, intent.detail, weight, intentIds, dataSemantics);
+        return output;
       }
       break;
     case 'distribution':
