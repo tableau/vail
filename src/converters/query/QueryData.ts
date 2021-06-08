@@ -11,8 +11,12 @@ import { OutputSpec } from '../../api/spec/OutputSpec';
 import { getOutputFields } from '../../api/spec/GetOutputFields';
 import { FieldSpec } from '../../api/spec/FieldSpec';
 import { DataSemantics } from '../../api/dataSemantics/DataSemantics';
+import { getFieldLabel } from './FieldLabel';
 
-/** Run a query to shape the data properly for the given OutputSpec, aggregating, sorting, etc. */
+/**
+ * Run a query to shape the data properly for the given OutputSpec, aggregating, sorting, etc.
+ * Note that aggregated fields use getFieldLable() to generate a column name such as "average somefield".
+ */
 export function queryData(outputSpec: OutputSpec, fieldResolver: FieldResolver, data: object[], dataSemantics: DataSemantics): object[] {
   const queryString = getQueryString(outputSpec, fieldResolver, dataSemantics);
   return alasql(queryString, [data]);
@@ -36,9 +40,8 @@ function getSelectClause(allFields: FieldSpec[]): string {
     const details = fieldAPI(field).asDetails();
     if (details && details.derivation) {
       const agg = derivationToSQL(details.derivation);
-      // TODO: if there are multiple derivations of the same field, we need a different name for each one
-      //  and those names need to be referenced from any place that needs to access these fields
-      return agg + '(' + details.field + ') AS ' + details.field;
+      const nameAndDerivation = escapeName(getFieldLabel(details));
+      return agg + '(' + details.field + ') AS ' + nameAndDerivation;
     } else {
       return fieldAPI(field).getName();
     }
@@ -74,7 +77,7 @@ function getOrderByClause(outputSpec: OutputSpec, fieldResolver: FieldResolver):
   if (outputSpec.dataShape && outputSpec.dataShape.sort) {
     const sortSpec = outputSpec.dataShape.sort[0];
     const sortByField = fieldResolver.getField(sortSpec.sortBy);
-    const sortByName = sortByField.field;
+    const sortByName = escapeName(getFieldLabel(sortByField));
     const order = sortSpec.sortType === 'descending' ? 'DESC' : 'ASC';
     return 'ORDER BY ' + sortByName + ' ' + order;
   }
@@ -99,4 +102,8 @@ function derivationToSQL(derivation?: FieldDerivation): string {
     // TODO: finish the rest of these
   }
   return 'SUM';
+}
+
+function escapeName(name: string): string {
+  return '`' + name + '`';
 }

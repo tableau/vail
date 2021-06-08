@@ -7,6 +7,7 @@
 import * as VL from 'vega-lite';
 import { FieldResolver } from '../../api/spec/FieldAPI';
 import { FocusSpec, OutputSpec } from '../../api/spec/OutputSpec';
+import { getFieldLabel } from '../query/FieldLabel';
 
 const highlightColor = '#ff5e13';
 
@@ -18,7 +19,7 @@ export function addFocus(vlspec: VL.TopLevelSpec, outputSpec: OutputSpec, fieldR
     for (const focusSpec of focusSpecs) {
       if (sortSpecs) {
         // While there might be multiple possibilities, we'll take the first sortBy field for now
-        const sortByName = fieldResolver.getField(sortSpecs[0].sortBy).field;
+        const sortByName = getFieldLabel(fieldResolver.getField(sortSpecs[0].sortBy));
         vlspec = addFocusWithSort(vlspec, focusSpec, data, sortByName);
       } else {
         vlspec = addFocusNoSort(vlspec, focusSpec, fieldResolver);

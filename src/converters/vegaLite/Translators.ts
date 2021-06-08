@@ -10,6 +10,7 @@ import { DataSemantics } from '../../api/dataSemantics/DataSemantics';
 import { FieldSpec } from '../../api/spec/FieldSpec';
 import { FieldResolver } from '../../api/spec/FieldAPI';
 import { OutputSpec, VizType } from '../../api/spec/OutputSpec';
+import { getFieldLabel } from '../query/FieldLabel';
 
 /**
  * Functions that convert from VAIL types to VegaLite types
@@ -48,10 +49,12 @@ export function convertFieldType(
   dataSemantics: DataSemantics,
   fieldResolver: FieldResolver
 ): VLFieldDef {
-  const fieldName = fieldResolver.getField(field).field;
+  const fieldDetails = fieldResolver.getField(field);
+  const fieldLabel = getFieldLabel(fieldDetails);
+  const fieldName = fieldDetails.field;
   const fieldInfo = dataSemantics[fieldName];
   const vegaType = getVegaType(fieldInfo.type);
-  const vlFieldDef = { field: fieldName, type: vegaType };
+  const vlFieldDef = { field: fieldLabel, type: vegaType };
   return tackOnSort(vlFieldDef, outputSpec, fieldResolver);
 }
 

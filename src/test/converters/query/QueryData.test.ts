@@ -50,6 +50,7 @@ describe('queryData', () => {
     // validate the aggregated measures
     expect(Object.values(result[0])[1]).toBe(30); // average of 40,30,20
     expect(Object.values(result[1])[1]).toBe(10);
+    expect((result[0] as any)['average meas1'] !== undefined);
   });
 
   it('should not aggregate a measure, even if no derivation is specified', () => {
