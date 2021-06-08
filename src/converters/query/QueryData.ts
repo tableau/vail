@@ -24,6 +24,7 @@ export function queryData(outputSpec: OutputSpec, fieldResolver: FieldResolver, 
 
 /**
  * generate the SQL query needed for a concrete instantiation of an output spec.
+ * Note that aggregated fields use getFieldLable() to generate a column name such as "average somefield".
  * SELECT (all fields w/ aggregation) GROUP BY (dimensions) ORDER BY (sort fields)
  */
 export function getQueryString(outputSpec: OutputSpec, fieldResolver: FieldResolver, dataSemantics: DataSemantics): string {
