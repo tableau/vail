@@ -17,7 +17,7 @@ import { getFieldLabel } from './FieldLabel';
  * Run a query to shape the data properly for the given OutputSpec, aggregating, sorting, etc.
  * Note that aggregated fields use getFieldLable() to generate a column name such as "average somefield".
  */
-export function queryData(outputSpec: OutputSpec, fieldResolver: FieldResolver, data: object[], dataSemantics: DataSemantics): object[] {
+export function queryData(outputSpec: OutputSpec, fieldResolver: FieldResolver, dataSemantics: DataSemantics, data: object[]): object[] {
   const queryString = getQueryString(outputSpec, fieldResolver, dataSemantics);
   return alasql(queryString, [data]);
 }

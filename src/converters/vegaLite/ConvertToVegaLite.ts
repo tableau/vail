@@ -19,7 +19,7 @@ export function convertToVegaLite(
   dataSemantics: DataSemantics,
   data: object[]
 ): VL.TopLevelSpec {
-  const processedData = queryData(outputSpec, fieldResolver, data, dataSemantics);
+  const processedData = queryData(outputSpec, fieldResolver, dataSemantics, data);
   let vlspec = createBasicViz(outputSpec, fieldResolver, dataSemantics, processedData);
   if (outputSpec.encoding.vizType === 'histogram') {
     vlspec = addHistogram(vlspec, fieldResolver, outputSpec.encoding);

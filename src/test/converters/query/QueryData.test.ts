@@ -28,7 +28,7 @@ describe('queryData', () => {
     const output: OutputSpec = { weight: 1, intentIds: [1], encoding: { vizType: 'bar', x: ['dim1', 'dim2'] } };
     const resolver = new FieldResolver({});
 
-    const result = queryData(output, resolver, data, dataSemantics);
+    const result = queryData(output, resolver, dataSemantics, data);
     expect(result.length).toBe(3); // ac, ad, bd
     // validate the first row only contains expected fields
     const row1 = result[0];
@@ -45,7 +45,7 @@ describe('queryData', () => {
     };
     const resolver = new FieldResolver({});
 
-    const result = queryData(output, resolver, data, dataSemantics);
+    const result = queryData(output, resolver, dataSemantics, data);
     expect(result.length).toBe(2); // a, b
     // validate the aggregated measures
     expect(Object.values(result[0])[1]).toBe(30); // average of 40,30,20
@@ -58,7 +58,7 @@ describe('queryData', () => {
     const output: OutputSpec = { weight: 1, intentIds: [1], encoding: { vizType: 'bar', x: ['meas2'] } };
     const resolver = new FieldResolver({});
 
-    const result = queryData(output, resolver, data, dataSemantics);
+    const result = queryData(output, resolver, dataSemantics, data);
     expect(result.length).toBe(4);
   });
 
@@ -71,7 +71,7 @@ describe('queryData', () => {
     };
     const resolver = new FieldResolver({});
 
-    const result = queryData(output, resolver, data, dataSemantics);
+    const result = queryData(output, resolver, dataSemantics, data);
     expect(result.length).toBe(4); // unaggregated
     // validate the row order by looking at meas1
     expect(Object.values(result[0])[1]).toBe(10);
