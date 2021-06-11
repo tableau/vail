@@ -238,3 +238,33 @@ const vegalite = convertToVegaLite(output[0], resolver, vail.getDataSource(), da
 const results = VL.compile(vegalite);
 embed('#vegaLiteViz', results.spec);
 ```
+
+
+---
+## Query
+
+`OutputSpec` contains a list of fields, some of which may specify derivations such as `sum of` or `year of`.
+It may also include data shaping operations such as filtering and sorting.
+In many cases, this requires processing the raw data table by aggregating, filtering, and sorting it.
+While, this isn't a core part of VAIL, it does offer utility functions to help you shape your data.
+
+To reshape your data based on a particular `OutputSpec`, you can do the following:
+
+```javascript
+const output = vail.getOutput();
+const resolver = new FieldResolver(intent.fieldVars);
+const data = queryData(output[0], resolver, vail.getDataSource(), data);
+```
+
+If you just want to generate the appropriate SQL query without running it, you can make the following call instead:
+
+```javascript
+const data = getQueryString(output[0], resolver, vail.getDataSource());
+```
+
+Several notes about `queryData` and `getQueryString`:
+
+* In the returned result set, aggregated fields include the aggregation in their name, e.g. `average price`. This makes it so a single field can have multiple aggregations. Call `getFieldLabel` to figure out the name for a given `FieldSpec`.
+* It currently supports a limited set of aggregations.
+* It currently supports aggregation and sorting, but not filtering or binning.
+
