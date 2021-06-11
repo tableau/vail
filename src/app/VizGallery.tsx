@@ -59,12 +59,14 @@ export class VizGallery extends React.Component<VizGalleryProps> {
     const { width, height, vailInstance: vail, data } = this.props;
     const output = outputs.sortedSpecs[0];
 
-    // create field resolvers set to the first two values of the first var
-    const varName = Object.getOwnPropertyNames(outputs.fieldVars)[0];
+    // create field resolvers set to the first two values of each field variable
     const fieldResolver1 = new FieldResolver(outputs.fieldVars);
-    fieldResolver1.set(varName, 0);
     const fieldResolver2 = new FieldResolver(outputs.fieldVars);
-    fieldResolver2.set(varName, 1);
+    const varNames = Object.getOwnPropertyNames(outputs.fieldVars);
+    varNames.forEach(varName => {
+      fieldResolver1.set(varName, 0);
+      fieldResolver2.set(varName, 1);
+    });
 
     embedVegaLite('#vegaLiteViz1', { width: width / 2, height }, output, fieldResolver1, vail, data);
     embedVegaLite('#vegaLiteViz2', { width: width / 2, height }, output, fieldResolver2, vail, data);
